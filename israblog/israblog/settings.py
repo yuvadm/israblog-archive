@@ -12,4 +12,4 @@ SPIDER_MODULES = ['israblog.spiders']
 NEWSPIDER_MODULE = 'israblog.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'israblog (+http://www.yourdomain.com)'
+USER_AGENT = 'Israblog Archive Spider (+https://github.com/yuvadm/israblog-archive)'
