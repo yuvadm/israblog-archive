@@ -1,5 +1,7 @@
+Pillow==2.3.1
 Scrapy==0.22.2
 Twisted==13.2.0
+boto==2.27.0
 cffi==0.8.2
 cryptography==0.3
 cssselect==0.9.1
