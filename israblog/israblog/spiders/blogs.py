@@ -1,16 +1,16 @@
 import re
 
-from datetime import datetime
 from scrapy import log
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.settings import Settings
 
 
 class IsrablogSpider(CrawlSpider):
     name = 'israblog'
     allowed_domains = ['israblog.nana10.co.il']
     rules = (
-        Rule(SgmlLinkExtractor(allow=['blogread.asp?blog=\d+(&year=\d+&month=\d+)?']), callback='parse_blog'),
+        Rule(SgmlLinkExtractor(allow=[r'blogread\.asp']), callback='parse_blog', follow=True),
         Rule(SgmlLinkExtractor(allow=['/Category/\d+/.*',]), follow=True),
     )
     start_urls = [
@@ -20,17 +20,7 @@ class IsrablogSpider(CrawlSpider):
         'http://israblog.nana10.co.il/Categories',
     ]
 
-    def parse_start_url(self, response):
-        yield self.parse_blog(response)
-
     def parse_blog(self, response):
-        self.log(response.url)
-        match = re.match(r'/blogread.asp\?blog=(\d+)(?:&year=(\d+)&month=(\d+))?', response.url)
-        if match:
-            blog, year, month = match.groups()
-            if not year and not month:
-                now = datetime.now()
-                year = now.year()
-                month = now.month()
-            self.log(blog, year, month)
-        return None
+        with open(response.url.split('/')[-1], 'wb') as f:
+            f.write(response.body)
+
